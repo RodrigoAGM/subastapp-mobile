@@ -51,15 +51,40 @@ class LoginPage extends StatelessWidget {
             )),
             SizedBox(height: 40,),
             FadeAnimation(1.8, Center(
-              child: Container(
-                width: 120,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.blue[900]
-                ),
-                child: Center(child: Text("Login", style: TextStyle(color: Colors.white.withOpacity(.8)),)),
-              ),
+              child: Column(
+                children: <Widget>[
+                  RaisedButton(
+                    onPressed: (){
+
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(50),
+                    ),
+                    color: Colors.blue[900],
+                    child: Container(
+                      width: 120,
+                      padding: EdgeInsets.all(15),
+                      child: Center(child: Text("Login", style: TextStyle(color: Colors.white.withOpacity(.8)),)),
+                    ),
+                  ),
+
+                  RaisedButton(
+                    onPressed: (){
+
+                    },
+                    color: Colors.transparent,
+                    elevation: 0,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    highlightElevation: 0,
+                    child: Container(
+                      width: 150,
+                      padding: EdgeInsets.all(15),
+                      child: Center(child: Text("Not registered yet?", style: TextStyle(color: Colors.white.withOpacity(.8)),)),
+                    ),
+                  ),
+                ],
+              )
             )),
           ],
         ),
