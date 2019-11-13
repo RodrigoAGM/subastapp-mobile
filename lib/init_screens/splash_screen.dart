@@ -1,27 +1,70 @@
-import 'dart:async';    
 import 'package:flutter/material.dart';
-import 'package:subastapp/login/login_screen.dart';    
+import 'package:subastapp/animation/FadeAnimation.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:subastapp/login/login_screen.dart';
 
 class Splash extends StatefulWidget {
+  Splash({Key key}) : super(key: key);
+
   @override
-  _SplashState createState() => new _SplashState();
+  _SplashState createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashState extends State<Splash> with TickerProviderStateMixin{
+
+  AnimationController _scaleController;
+  AnimationController _scale2Controller;
+  AnimationController _widthController;
+  AnimationController _positionController;
+
+  Animation<double> _scaleAnimation;
+  Animation<double> _scale2Animation;
+  Animation<double> _widthAnimation;
+  Animation<double> _positionAnimation;
+
+  bool hideIcon = false;
+
   @override
   void initState() {
     super.initState();
+
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300)
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0, end: 0.8
+    ).animate(_scaleController)..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _scale2Controller.forward();
+      }
+    });
+
+    _scale2Controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300)
+    );
+
+    _scale2Animation = Tween<double>(
+      begin: 1.0,
+      end: 32.0
+    ).animate(_scale2Controller)..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.fade, child: LoginPage()));
+      }
+    });
+
     new Future.delayed(
         const Duration(seconds: 2),
-        () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => LoginPage()),
-            ));
+        () => _scaleController.forward()
+    );
+
   }
 
   @override
   Widget build(BuildContext context) {
-    
+
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -34,7 +77,7 @@ class _SplashState extends State<Splash> {
             Positioned(
               top: -50,
               left: 0,
-              child: Container(
+              child: FadeAnimation(1, Container(
                 width: width,
                 height: 400,
                 decoration: BoxDecoration(
@@ -43,12 +86,12 @@ class _SplashState extends State<Splash> {
                     fit: BoxFit.cover
                   )
                 ),
-              ),
+              )),
             ),
             Positioned(
               top: -100,
               left: 0,
-              child: Container(
+              child: FadeAnimation(1.3, Container(
                 width: width,
                 height: 400,
                 decoration: BoxDecoration(
@@ -57,12 +100,12 @@ class _SplashState extends State<Splash> {
                     fit: BoxFit.cover
                   )
                 ),
-              ),
+              )),
             ),
             Positioned(
               top: -150,
               left: 0,
-              child: Container(
+              child: FadeAnimation(1.6, Container(
                 width: width,
                 height: 400,
                 decoration: BoxDecoration(
@@ -71,7 +114,7 @@ class _SplashState extends State<Splash> {
                     fit: BoxFit.cover
                   )
                 ),
-              ),
+              )),
             ),
             Container(
               padding: EdgeInsets.all(20.0),
@@ -79,8 +122,9 @@ class _SplashState extends State<Splash> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    child: Center(
+                  FadeAnimation(
+                    1, 
+                    Center(
                       child: new Image(
                         image: AssetImage('assets/icon.png'),
                         height: MediaQuery.of(context).size.height/4,
@@ -88,8 +132,9 @@ class _SplashState extends State<Splash> {
                     ),                  
                   ),
                   SizedBox(height: 20,),
-                  Container(
-                    child: Center(
+                  FadeAnimation(
+                    1.3, 
+                    Center(
                       child: Text(
                         "Subastapp", 
                         style: TextStyle(

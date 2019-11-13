@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:subastapp/init_screens/onboarding_screen.dart';
 import 'package:subastapp/init_screens/splash_screen.dart';
 
 void main() => runApp(MyApp());
@@ -32,11 +34,10 @@ class _InitScreenState extends State<InitScreen> {
 
   Future checkOnBoarding() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _logged = (prefs.getBool('_logged') ?? true);
-
-    if (_logged) {
+    bool _show = (prefs.getBool('show') ?? true);
+    if (_show) {
       Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new Splash()));
+          new MaterialPageRoute(builder: (context) => new Onboarding()));
     } else {
       Navigator.of(context).pushReplacement(
           new MaterialPageRoute(builder: (context) => new Splash()));
