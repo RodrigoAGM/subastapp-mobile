@@ -1,15 +1,31 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:subastapp/init_screens/onboarding_screen.dart';
 import 'package:subastapp/init_screens/splash_screen.dart';
+import 'package:bloc/bloc.dart';
 
-void main() => runApp(MyApp());
+class BlocMainDelegate extends BlocDelegate {
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    print(error);
+  }
+
+  @override
+  void onTransition(Transition transition) {
+    print(transition);
+  }
+}
+
+void main() {
+  BlocSupervisor().delegate = BlocMainDelegate();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
