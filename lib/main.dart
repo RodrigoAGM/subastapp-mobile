@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:subastapp/init_screens/onboarding_screen.dart';
-import 'package:subastapp/init_screens/splash_screen.dart';
+import 'package:subastapp/ui/init_screens/onboarding_screen.dart';
+import 'package:subastapp/ui/init_screens/splash_screen.dart';
 import 'package:bloc/bloc.dart';
 
 class BlocMainDelegate extends BlocDelegate {

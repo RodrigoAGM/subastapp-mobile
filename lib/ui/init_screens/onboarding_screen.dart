@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:subastapp/animation/FadeAnimation.dart';
+import 'package:subastapp/ui/animation/FadeAnimation.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:subastapp/login/login_screen.dart';
+import 'package:subastapp/ui/login/login_screen.dart';
 
-class Splash extends StatefulWidget {
-  Splash({Key key}) : super(key: key);
+class Onboarding extends StatefulWidget {
+  Onboarding({Key key}) : super(key: key);
 
   @override
-  _SplashState createState() => _SplashState();
+  _OnboardingState createState() => _OnboardingState();
 }
 
-class _SplashState extends State<Splash> with TickerProviderStateMixin{
+class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin{
 
   AnimationController _scaleController;
   AnimationController _scale2Controller;
@@ -37,6 +37,37 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin{
       begin: 1.0, end: 0.8
     ).animate(_scaleController)..addStatusListener((status) {
       if (status == AnimationStatus.completed) {
+        _widthController.forward();
+      }
+    });
+
+    _widthController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 600)
+    );
+
+    _widthAnimation = Tween<double>(
+      begin: 80.0,
+      end: 300.0
+    ).animate(_widthController)..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _positionController.forward();
+      }
+    });
+
+    _positionController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000)
+    );
+
+    _positionAnimation = Tween<double>(
+      begin: 0.0,
+      end: 215.0
+    ).animate(_positionController)..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          hideIcon = true;
+        });
         _scale2Controller.forward();
       }
     });
@@ -54,12 +85,6 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin{
         Navigator.pushReplacement(context, PageTransition(type: PageTransitionType.fade, child: LoginPage()));
       }
     });
-
-    new Future.delayed(
-        const Duration(seconds: 2),
-        () => _scaleController.forward()
-    );
-
   }
 
   @override
@@ -146,6 +171,57 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin{
                       ),
                     ),
                   ),
+                  SizedBox(height: 40,),
+                  FadeAnimation(1.6, AnimatedBuilder(
+                    animation: _scaleController,
+                    builder: (context, child) => Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: Center(
+                      child: AnimatedBuilder(
+                        animation: _widthController,
+                        builder: (context, child) => Container(
+                          width: _widthAnimation.value,
+                          height: 80,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.blue.withOpacity(.4)
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              _scaleController.forward();
+                            },
+                            child: Stack(
+                              children: <Widget> [
+                                AnimatedBuilder(
+                                  animation: _positionController,
+                                  builder: (context, child) => Positioned(
+                                    left: _positionAnimation.value,
+                                    child: AnimatedBuilder(
+                                      animation: _scale2Controller,
+                                      builder: (context, child) => Transform.scale(
+                                        scale: _scale2Animation.value,
+                                        child: Container(
+                                          width: 60,
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.blue
+                                          ),
+                                          child: hideIcon == false ? Icon(Icons.arrow_forward, color: Colors.white,) : Container(),
+                                        )
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            ),
+                          ),
+                        ),
+                      ),
+                    )),
+                  )),
+                  SizedBox(height: 60,),
                 ],
               ),
             )

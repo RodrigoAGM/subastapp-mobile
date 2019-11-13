@@ -18,8 +18,3 @@ class LoginEventInitSignIn extends LoginEvent{
   @override
   String toString() => 'LoginEventInitSignIn';
 }
-
-class LoginEventRegister extends LoginEvent{
-  @override
-  String toString() => 'LoginEventInitSignIn';
-}

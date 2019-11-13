@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:subastapp/login/login_events.dart';
-import 'package:subastapp/login/login_states.dart';
+import 'package:subastapp/ui/login/login_events.dart';
+import 'package:subastapp/ui/login/login_states.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState>{
 
