@@ -1,11 +1,11 @@
-import 'animation/FadeAnimation.dart';
 import 'package:flutter/material.dart';
+import 'package:subastapp/animation/FadeAnimation.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(48, 53, 169, 1),
+      backgroundColor: Color.fromRGBO(25,118,210, 1),
       body: Container(
         padding: EdgeInsets.all(30),
         child: Column(
@@ -56,9 +56,9 @@ class LoginPage extends StatelessWidget {
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  color: Colors.blue[800]
+                  color: Colors.blue[900]
                 ),
-                child: Center(child: Text("Login", style: TextStyle(color: Colors.white.withOpacity(.7)),)),
+                child: Center(child: Text("Login", style: TextStyle(color: Colors.white.withOpacity(.8)),)),
               ),
             )),
           ],
