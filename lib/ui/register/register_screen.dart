@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:subastapp/ui/animation/FadeAnimation.dart';
-import 'package:subastapp/ui/bloc/register_bloc.dart';
+import 'package:subastapp/bloc/register_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:subastapp/ui/register/register_events.dart';
 import 'package:subastapp/ui/register/register_states.dart';
