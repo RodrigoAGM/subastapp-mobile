@@ -1,5 +1,5 @@
 class Customer {
-  final int id;
+  final String id;
   final String name;
   final String email;
   final String password;
@@ -33,6 +33,11 @@ class Customer {
 
   Map<String, dynamic> toRegisterJson() =>{
     'full_name': name,
+    'email': email,
+    'password':password,
+  };
+
+   Map<String, dynamic> toLoginJson() =>{
     'email': email,
     'password':password,
   };

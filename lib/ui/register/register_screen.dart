@@ -4,6 +4,7 @@ import 'package:subastapp/ui/bloc/register_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:subastapp/ui/register/register_events.dart';
 import 'package:subastapp/ui/register/register_states.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterPage extends StatefulWidget {
   
@@ -20,8 +21,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   final _confirmController = TextEditingController();
-  bool _error = false;
-  String errorMessage;
 
   @override
   void initState() {
@@ -133,13 +132,27 @@ class _RegisterPageState extends State<RegisterPage> {
                               var email = _emailController.text;
                               if (confirm.isEmpty || pass.isEmpty || name.isEmpty || email.isEmpty){
                                 setState(() {
-                                  _error = true;
-                                  errorMessage = "All fields must be completed";
+                                  Fluttertoast.showToast(
+                                      msg: "All fields must be completed!",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIos: 1,
+                                      backgroundColor: Colors.red.withOpacity(.6),
+                                      textColor: Colors.white,
+                                      fontSize: 12.0
+                                  );
                                 });
-                              }else if (confirm.compareTo(pass) > 0){
+                              }else if (confirm != pass){
                                 setState(() {
-                                  _error = true;
-                                  errorMessage = "Passwords don't match";
+                                  Fluttertoast.showToast(
+                                      msg: "Passwords don't match!",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIos: 1,
+                                      backgroundColor: Colors.red.withOpacity(.6),
+                                      textColor: Colors.white,
+                                      fontSize: 12.0
+                                  );
                                 });
                               }else{
                                 _registerBloc.dispatch(RegisterEventRegister(context, name, email, pass));
@@ -153,18 +166,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               width: 120,
                               padding: EdgeInsets.all(15),
                               child: Center(child: Text("Register", style: TextStyle(color: Colors.white.withOpacity(.8)),)),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            child: Center(
-                              child: Text(
-                                _error ? errorMessage : "", 
-                                style: TextStyle(
-                                  color: Colors.red.withOpacity(1), 
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
                             ),
                           ),
                         ],

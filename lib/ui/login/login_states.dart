@@ -1,13 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
 
-@immutable
 abstract class LoginState extends Equatable{
   LoginState([List props = const []]) : super(props);
 }
 
 class LoginStateDefault extends LoginState{
   
+  bool error;
+
+  LoginStateDefault(this.error);
+
   @override
   String toString() => 'LoginStateDefault';
 }

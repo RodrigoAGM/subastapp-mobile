@@ -5,6 +5,13 @@ import 'package:flutter/material.dart';
 abstract class LoginEvent extends Equatable{}
 
 class LoginEventSignIn extends LoginEvent{
+
+  final BuildContext context;
+  final String email;
+  final String pass;
+
+  LoginEventSignIn(this.context, this.email, this.pass);
+
   @override
   String toString() => 'LoginEventSignIn';
 }

@@ -6,6 +6,7 @@ import 'package:subastapp/ui/login/login_states.dart';
 import 'package:subastapp/ui/login/login_events.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:subastapp/ui/register/register_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -16,6 +17,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
   LoginBloc _loginBloc;
+  final _emailController = TextEditingController();
+  final _passController = TextEditingController();
 
   @override 
   void initState() {
@@ -41,6 +44,21 @@ class _LoginPageState extends State<LoginPage> {
             bloc:_loginBloc,
             builder: (BuildContext context, LoginState state) {
               if(state is LoginStateDefault){
+
+                if(state.error){
+                  
+                  Fluttertoast.showToast(
+                      msg: "Email or password incorrect",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.red.withOpacity(.6),
+                      textColor: Colors.white,
+                      fontSize: 12.0
+                  );
+                  state.error=false;
+                }
+
                 return Container(
                   padding: EdgeInsets.all(30),
                   child: Column(
@@ -63,10 +81,11 @@ class _LoginPageState extends State<LoginPage> {
                                 border: Border(bottom: BorderSide(color: Colors.grey[300]))
                               ),
                               child: TextField(
+                                controller: _emailController,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                                  hintText: "Email or Phone number"
+                                  hintText: "Email"
                                 ),
                               ),
                             ),
@@ -74,6 +93,8 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: BoxDecoration(
                               ),
                               child: TextField(
+                                controller: _passController,
+                                obscureText: true,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
@@ -84,13 +105,29 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       )),
-                      SizedBox(height: 40,),
+                      SizedBox(height: 40.0,),
                       FadeAnimation(1.8, Center(
                         child: Column(
                           children: <Widget>[
                             RaisedButton(
                               onPressed: (){
-
+                                var pass = _passController.text;
+                                var email = _emailController.text;
+                                if (pass.isEmpty || email.isEmpty){
+                                  setState(() {
+                                    Fluttertoast.showToast(
+                                      msg: "All fields must be completed",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIos: 1,
+                                      backgroundColor: Colors.red.withOpacity(.6),
+                                      textColor: Colors.white,
+                                      fontSize: 12,
+                                    );
+                                  });
+                                }else{
+                                  _loginBloc.dispatch(LoginEventSignIn(context, email, pass));
+                                }
                               },
                               shape: RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(50),
@@ -124,6 +161,24 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 );
+              }
+
+              if (state is LoginStateLoading){
+                return Center(
+                  child: CircularProgressIndicator(),
+                );  
+              }
+
+              if (state is LoginStateError){
+                return Center(
+                  child: Text(
+                    'Connection error!',
+                    style: TextStyle(
+                      color: Colors.red.withOpacity(1), 
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );  
               }
             },
           ),

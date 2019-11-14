@@ -8,4 +8,8 @@ class CustomerApi{
   Future<String> register(String name, String email, String password){
     return _customerRepository.register(name, email, password);
   }
+
+  Future<Customer> login(String email, String password){
+    return _customerRepository.login(email, password);
+  }
 }
