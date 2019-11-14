@@ -19,6 +19,8 @@ class _LoginPageState extends State<LoginPage> {
   LoginBloc _loginBloc;
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
+  final _emailFocus = FocusNode();
+  final _passFocus = FocusNode();
 
   @override 
   void initState() {
@@ -80,7 +82,13 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: BoxDecoration(
                                 border: Border(bottom: BorderSide(color: Colors.grey[300]))
                               ),
-                              child: TextField(
+                              child: TextFormField(
+                                focusNode: _emailFocus,
+                                keyboardType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (value){
+                                  _fieldFocusChange(context, _emailFocus, _passFocus);
+                                },
                                 controller: _emailController,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
@@ -92,7 +100,9 @@ class _LoginPageState extends State<LoginPage> {
                             Container(
                               decoration: BoxDecoration(
                               ),
-                              child: TextField(
+                              child: TextFormField(
+                                focusNode: _passFocus,
+                                textInputAction: TextInputAction.done,
                                 controller: _passController,
                                 obscureText: true,
                                 decoration: InputDecoration(
@@ -185,5 +195,10 @@ class _LoginPageState extends State<LoginPage> {
         )
       ),
     );
+  }
+
+  _fieldFocusChange(BuildContext context, FocusNode currentFocus,FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);  
   }
 }

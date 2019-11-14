@@ -21,6 +21,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   final _confirmController = TextEditingController();
+  final FocusNode _nameFocus = FocusNode();  
+  final FocusNode _emailFocus = FocusNode();  
+  final FocusNode _passFocus = FocusNode();
+  final FocusNode _confirmFocus = FocusNode();
 
   @override
   void initState() {
@@ -67,8 +71,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             decoration: BoxDecoration(
                               border: Border(bottom: BorderSide(color: Colors.grey[300]))
                             ),
-                            child: TextField(
+                            child: TextFormField(
+                              textInputAction: TextInputAction.next,
+                              autofocus: true,
+                              focusNode: _nameFocus,
                               controller: _nameController,
+                              onFieldSubmitted: (value){
+                                _fieldFocusChange(context, _nameFocus, _emailFocus);
+                              },
                               textCapitalization: TextCapitalization.words,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -81,7 +91,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             decoration: BoxDecoration(
                               border: Border(bottom: BorderSide(color: Colors.grey[300]))
                             ),
-                            child: TextField(
+                            child: TextFormField(
+                              focusNode: _emailFocus,
+                              onFieldSubmitted: (value){
+                                _fieldFocusChange(context, _emailFocus, _passFocus);
+                              },
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.emailAddress,
                               controller: _emailController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -94,7 +110,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             decoration: BoxDecoration(
                               border: Border(bottom: BorderSide(color: Colors.grey[300]))
                             ),
-                            child: TextField(
+                            child: TextFormField(
+                              focusNode: _passFocus,
+                              onFieldSubmitted: (value){
+                                _fieldFocusChange(context, _passFocus, _confirmFocus);
+                              },
+                              textInputAction: TextInputAction.next,
                               obscureText: true,
                               controller: _passController,
                               decoration: InputDecoration(
@@ -107,7 +128,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           Container(
                             decoration: BoxDecoration(
                             ),
-                            child: TextField(
+                            child: TextFormField(
+                              focusNode: _confirmFocus,
+                              textInputAction: TextInputAction.done,
                               controller: _confirmController,
                               obscureText: true,
                               decoration: InputDecoration(
@@ -197,5 +220,10 @@ class _RegisterPageState extends State<RegisterPage> {
         )
       )
     );
+  }
+
+  _fieldFocusChange(BuildContext context, FocusNode currentFocus,FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);  
   }
 }
