@@ -16,6 +16,12 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
 
   RegisterBloc _registerBloc;
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passController = TextEditingController();
+  final _confirmController = TextEditingController();
+  bool _error = false;
+  String errorMessage;
 
   @override
   void initState() {
@@ -63,10 +69,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               border: Border(bottom: BorderSide(color: Colors.grey[300]))
                             ),
                             child: TextField(
+                              controller: _nameController,
+                              textCapitalization: TextCapitalization.words,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                                hintText: "Name"
+                                hintText: "Full name",
                               ),
                             ),
                           ),
@@ -75,10 +83,25 @@ class _RegisterPageState extends State<RegisterPage> {
                               border: Border(bottom: BorderSide(color: Colors.grey[300]))
                             ),
                             child: TextField(
+                              controller: _emailController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                                hintText: "Email"
+                                hintText: "Email",
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border(bottom: BorderSide(color: Colors.grey[300]))
+                            ),
+                            child: TextField(
+                              obscureText: true,
+                              controller: _passController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
+                                hintText: "Password",
                               ),
                             ),
                           ),
@@ -86,10 +109,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             decoration: BoxDecoration(
                             ),
                             child: TextField(
+                              controller: _confirmController,
+                              obscureText: true,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintStyle: TextStyle(color: Colors.grey.withOpacity(.8)),
-                                hintText: "Password"
+                                hintText: "Confirm password",
                               ),
                             ),
                           ),
@@ -102,7 +127,23 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: <Widget>[
                           RaisedButton(
                             onPressed: (){
-
+                              var confirm = _confirmController.text;
+                              var pass = _passController.text;
+                              var name = _nameController.text;
+                              var email = _emailController.text;
+                              if (confirm.isEmpty || pass.isEmpty || name.isEmpty || email.isEmpty){
+                                setState(() {
+                                  _error = true;
+                                  errorMessage = "All fields must be completed";
+                                });
+                              }else if (confirm.compareTo(pass) > 0){
+                                setState(() {
+                                  _error = true;
+                                  errorMessage = "Passwords don't match";
+                                });
+                              }else{
+                                _registerBloc.dispatch(RegisterEventRegister(context, name, email, pass));
+                              }
                             },
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(50),
@@ -114,12 +155,42 @@ class _RegisterPageState extends State<RegisterPage> {
                               child: Center(child: Text("Register", style: TextStyle(color: Colors.white.withOpacity(.8)),)),
                             ),
                           ),
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            child: Center(
+                              child: Text(
+                                _error ? errorMessage : "", 
+                                style: TextStyle(
+                                  color: Colors.red.withOpacity(1), 
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ),
+                          ),
                         ],
                       )
                     )),
                   ],
                 ),
               );
+            }
+
+            if (state is RegisterStateLoading){
+              return Center(
+                child: CircularProgressIndicator(),
+              );  
+            }
+
+            if (state is RegisterStateError){
+              return Center(
+                child: Text(
+                  'Connection error!',
+                  style: TextStyle(
+                    color: Colors.red.withOpacity(1), 
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );  
             }
           },
         )

@@ -22,12 +22,18 @@ class Customer {
   }
 
   Map<String, dynamic> toJson() =>{
-    'id': id,
-    'name': name,
+    '_id': id,
+    'full_name': name,
     'email': email,
     'password':password,
     'phone': phone,
     'age': age,
     'image': image
+  };
+
+  Map<String, dynamic> toRegisterJson() =>{
+    'full_name': name,
+    'email': email,
+    'password':password,
   };
 }
