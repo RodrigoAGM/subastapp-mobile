@@ -5,6 +5,8 @@ import 'package:subastapp/ui/login/login_screen.dart';
 import 'package:subastapp/ui/register/register_events.dart';
 import 'package:subastapp/ui/register/register_states.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
 
@@ -12,6 +14,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
   RegisterState get initialState => RegisterStateDefault();
 
   final _customerApi = new CustomerApi();
+  final _storage = new FlutterSecureStorage();
 
   @override
   Stream<RegisterState> mapEventToState(RegisterState state, RegisterEvent event) async*{
@@ -24,11 +27,28 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
     try{
       yield RegisterStateLoading();
       var result = await _customerApi.register(event.name, event.email, event.password);
-      debugPrint(result.toString());
       if(result == null) {
         yield RegisterStateError();
       }else{
-        Navigator.pushReplacement(event.context, PageTransition(type: PageTransitionType.fade, child: LoginPage()));
+
+        try{
+          yield RegisterStateLoading();
+          var loginResult = await _customerApi.login(event.email, event.password);
+
+          if(loginResult == null) {
+            yield RegisterStateError();
+          }else{
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setBool('show', false);
+            await _storage.write(key: 'token', value: loginResult.token);
+            await _storage.write(key: 'userId', value: loginResult.id);
+            await _storage.write(key: 'email', value: loginResult.email);
+            await _storage.write(key: 'pass', value: loginResult.password);
+            Navigator.pushReplacement(event.context, PageTransition(type: PageTransitionType.fade, child: LoginPage()));
+          }
+        }catch(e){
+          yield RegisterStateError();
+        }
       }
     }catch(e){
       yield RegisterStateError();

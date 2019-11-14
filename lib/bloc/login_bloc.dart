@@ -6,11 +6,14 @@ import 'package:subastapp/ui/login/login_events.dart';
 import 'package:subastapp/ui/login/login_states.dart';
 import 'package:flutter/foundation.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState>{
 
     @override
     LoginState get initialState => LoginStateDefault(false);
+    final _storage = new FlutterSecureStorage();
 
     final _customerApi = new CustomerApi();
 
@@ -31,6 +34,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
         }else if (result.id == "not found") {
           yield LoginStateDefault(true);
         }else{
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool('show', false);
+          await _storage.write(key: 'token', value: result.token);
+          await _storage.write(key: 'userId', value: result.id);
+          await _storage.write(key: 'email', value: result.email);
+          await _storage.write(key: 'pass', value: result.password);
+
           Navigator.pushReplacement(event.context, PageTransition(type: PageTransitionType.fade, child: Splash()));
         }
       }catch(e){

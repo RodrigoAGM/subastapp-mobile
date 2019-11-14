@@ -1,13 +1,14 @@
 class Customer {
-  final String id;
-  final String name;
-  final String email;
-  final String password;
-  final String phone;
-  final int age;
-  final String image;
+  String id;
+  String name;
+  String email;
+  String password;
+  String phone;
+  int age;
+  String image;
+  String token;
 
-  Customer({this.id, this.name, this.email, this.password, this.phone, this.age, this.image});
+  Customer({this.id, this.name, this.email, this.password, this.phone, this.age, this.image, this.token});
 
   factory Customer.fromJson(Map<String, dynamic> json){
     return Customer(

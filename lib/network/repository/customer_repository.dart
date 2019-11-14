@@ -9,7 +9,7 @@ class CustomerRepository{
   Future<String> register(String name, String email, String password){
 
 
-    Customer cus = new Customer(id: null, age: null, email: email, name: name, password: password, image: null, phone: null);
+    Customer cus = new Customer(email: email, name: name, password: password);
 
     final url = 'https://subastapp.herokuapp.com/customers/signup';
     return http.post(url,body: cus.toRegisterJson()).then((http.Response response){
@@ -28,13 +28,14 @@ class CustomerRepository{
 
   Future<Customer> login(String email, String password){
 
-    Customer cus = new Customer(id: null, age: null, email: email, name: null, password: password, image: null, phone: null);
+    Customer cus = new Customer(email: email, password: password);
 
     final url = 'https://subastapp.herokuapp.com/customers/signin';
     return http.post(url,body: cus.toLoginJson()).then((http.Response response){
       final int statusCode = response.statusCode;
       var newId = "";
       var newEmail = "";
+      var token = "";
 
       if (statusCode < 200 || statusCode > 401) {
         throw new Exception("Error while fetching data");
@@ -45,7 +46,7 @@ class CustomerRepository{
       }
       else{
         var res = json.decode(response.body);
-        var token = res['token'];
+        token = res['token'];
 
         var parsedData = parseJwt(token);
         
@@ -53,7 +54,12 @@ class CustomerRepository{
         newEmail = parsedData['email'];
       }
       
-      Customer newCus = new Customer(id: newId, age: null, email: newEmail, name: null, password: cus.password, image: null, phone: null);
+      Customer newCus = new Customer(id: newId, 
+        email: newEmail, 
+        password: cus.password, 
+        token: token,
+      );
+
       return newCus;
     });
   }
