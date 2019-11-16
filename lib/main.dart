@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:subastapp/ui/init_screens/onboarding_screen.dart';
 import 'package:subastapp/ui/init_screens/splash_screen.dart';
 import 'package:bloc/bloc.dart';
+import 'ui/home/home_screen.dart';
 
 class BlocMainDelegate extends BlocDelegate {
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
     ]);
     return MaterialApp(
       title: 'Welcome to Subastapp',
-      home: InitScreen(),
+      home: MainPage(),
     );
   }
 }
