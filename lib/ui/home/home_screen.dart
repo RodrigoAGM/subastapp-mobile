@@ -59,7 +59,7 @@ class _MainPageState extends State<MainPage>{
             title:Text('Shopping')
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.gavel),
             title:Text('Home')
           ),
           BottomNavigationBarItem(
