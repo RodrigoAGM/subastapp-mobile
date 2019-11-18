@@ -44,6 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
           await _storage.write(key: 'userId', value: result.id);
           await _storage.write(key: 'email', value: result.email);
           await _storage.write(key: 'pass', value: result.password);
+          await _storage.write(key: 'store', value: result.storeId);
 
           Navigator.pushReplacement(event.context, PageTransition(type: PageTransitionType.fade, child: MainPage()));
         }

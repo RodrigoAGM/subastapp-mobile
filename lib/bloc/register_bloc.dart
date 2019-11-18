@@ -45,6 +45,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
             await _storage.write(key: 'userId', value: loginResult.id);
             await _storage.write(key: 'email', value: loginResult.email);
             await _storage.write(key: 'pass', value: loginResult.password);
+            await _storage.write(key: 'store', value: loginResult.storeId);
             Navigator.pushReplacement(event.context, PageTransition(type: PageTransitionType.fade, child: MainPage()));
           }
         }catch(e){
