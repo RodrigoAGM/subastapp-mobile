@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:subastapp/network/customer_api.dart';
+import 'package:subastapp/ui/home/home_screen.dart';
 import 'package:subastapp/ui/login/login_screen.dart';
 import 'package:subastapp/ui/register/register_events.dart';
 import 'package:subastapp/ui/register/register_states.dart';
@@ -44,7 +45,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
             await _storage.write(key: 'userId', value: loginResult.id);
             await _storage.write(key: 'email', value: loginResult.email);
             await _storage.write(key: 'pass', value: loginResult.password);
-            Navigator.pushReplacement(event.context, PageTransition(type: PageTransitionType.fade, child: LoginPage()));
+            Navigator.pushReplacement(event.context, PageTransition(type: PageTransitionType.fade, child: MainPage()));
           }
         }catch(e){
           yield RegisterStateError();
