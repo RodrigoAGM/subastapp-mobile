@@ -22,6 +22,11 @@ class LoginEventSignOut extends LoginEvent{
 }
 
 class LoginEventInitSignIn extends LoginEvent{
+
+  final BuildContext context;
+
+  LoginEventInitSignIn(this.context);
+
   @override
   String toString() => 'LoginEventInitSignIn';
 }
