@@ -32,12 +32,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
       try{
         yield LoginStateLoading();
         var result = await _customerApi.login(event.email, event.pass);
-        debugPrint(result.toString());
+
+        debugPrint("Entered here");
+
         if(result == null) {
           yield LoginStateError();
         }else if (result.id == "not found") {
           yield LoginStateDefault(true);
         }else{
+          debugPrint(result.toString());
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setBool('show', false);
           await _storage.write(key: 'token', value: result.token);
@@ -63,6 +66,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
         if (email != null && pass != null){
           var result = await _customerApi.login(email, pass);
           debugPrint(result.toString());
+
           if(result == null) {
             yield LoginStateDefault(false);
           }else if (result.id == "not found") {
@@ -79,6 +83,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
         }
         
       }catch(e){
+        debugPrint(e.toString());
         yield LoginStateError();
       }
     }

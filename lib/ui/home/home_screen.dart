@@ -48,6 +48,20 @@ class _MainPageState extends State<MainPage>{
         centerTitle: true,
         backgroundColor: Theme.of(context).canvasColor,
         elevation: 1,
+        actions: <Widget>[
+          FutureBuilder(
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if(currentTabIndex == 1){
+                return RaisedButton(
+                  onPressed: (){},
+                  child: Icon(Icons.search),
+                );
+              }else{
+                return Container();
+              }
+            },
+          ),
+        ],
       ),
       body:tabs[currentTabIndex],
       bottomNavigationBar: BottomNavigationBar(

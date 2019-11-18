@@ -44,6 +44,5 @@ class Customer {
    Map<String, dynamic> toLoginJson() =>{
     'email': email,
     'password':password,
-    'storeId':storeId
   };
 }
