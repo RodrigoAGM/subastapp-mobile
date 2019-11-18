@@ -33,13 +33,22 @@ class _MainPageState extends State<MainPage>{
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "SubastApp",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold), 
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 1,
+      ),
       body:tabs[currentTabIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTapped,
