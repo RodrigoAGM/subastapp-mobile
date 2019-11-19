@@ -7,8 +7,9 @@ class Customer {
   int age;
   String image;
   String token;
+  String storeId;
 
-  Customer({this.id, this.name, this.email, this.password, this.phone, this.age, this.image, this.token});
+  Customer({this.id, this.name, this.email, this.password, this.phone, this.age, this.image, this.storeId, this.token});
 
   factory Customer.fromJson(Map<String, dynamic> json){
     return Customer(
@@ -18,7 +19,8 @@ class Customer {
       password: json['password'],
       phone: json['phone'],
       age: json['age'],
-      image: json['image']
+      image: json['image'],
+      storeId: json['storeId']
     );
   }
 
@@ -29,7 +31,8 @@ class Customer {
     'password':password,
     'phone': phone,
     'age': age,
-    'image': image
+    'image': image,
+    'storeId' : storeId
   };
 
   Map<String, dynamic> toRegisterJson() =>{

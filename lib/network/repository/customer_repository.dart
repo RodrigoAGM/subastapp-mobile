@@ -36,6 +36,7 @@ class CustomerRepository{
       var newId = "";
       var newEmail = "";
       var token = "";
+      var storeid = "";
 
       if (statusCode < 200 || statusCode > 401) {
         throw new Exception("Error while fetching data");
@@ -43,21 +44,24 @@ class CustomerRepository{
       else if (statusCode == 401){
         newId = "not found";
         newEmail = "not found";
+        storeid = "not found";
       }
       else{
         var res = json.decode(response.body);
         token = res['token'];
 
         var parsedData = parseJwt(token);
-        
+        debugPrint(parsedData.toString());
         newId = parsedData['userId'];
         newEmail = parsedData['email'];
+        storeid = parsedData['storeId'] == null ? "" : parsedData['storeId'];
       }
       
       Customer newCus = new Customer(id: newId, 
         email: newEmail, 
         password: cus.password, 
         token: token,
+        storeId: storeid,
       );
 
       return newCus;
