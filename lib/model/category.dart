@@ -1,8 +1,11 @@
+import 'package:subastapp/model/product.dart';
+
 class Mcategory {
   String id;
   String name;
   String description;
   String imageUrl;
+  List<Product> products;
 
   Mcategory({this.id, this.name, this.description, this.imageUrl});
 
