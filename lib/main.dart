@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:subastapp/ui/home/PerfilPage/add_shop/add_shop_page.dart';
 import 'package:subastapp/ui/init_screens/onboarding_screen.dart';
 import 'package:subastapp/ui/init_screens/splash_screen.dart';
 import 'package:bloc/bloc.dart';

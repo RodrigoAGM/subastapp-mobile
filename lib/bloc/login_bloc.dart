@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:subastapp/network/customer_api.dart';
 import 'package:subastapp/ui/home/home_screen.dart';
-import 'package:subastapp/ui/init_screens/splash_screen.dart';
 import 'package:subastapp/ui/login/login_events.dart';
 import 'package:subastapp/ui/login/login_states.dart';
 import 'package:flutter/foundation.dart';
