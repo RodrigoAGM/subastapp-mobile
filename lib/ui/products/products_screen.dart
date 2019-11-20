@@ -20,6 +20,25 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     final api = ProductApi();
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "SubastApp",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 1,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Theme.of(context).accentColor,
+          ),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Container(
         child: FutureBuilder(
           future: api.getAllByCategory(_categoryId),
@@ -32,14 +51,16 @@ class _ProductPageState extends State<ProductPage> {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                      ),                       
                       child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ListTile(
                             leading: Container(
                               height: 100,
                               width: 100,
-                              child:
-                                  Image.network(snapshot.data[index].imageUrl),
+                              child: Image.network(snapshot.data[index].imageUrl),
                             ),
                             title: Text(
                               snapshot.data[index].name,
@@ -57,7 +78,7 @@ class _ProductPageState extends State<ProductPage> {
               );
             }
             return Center(
-              child: Text('Cargando...'),
+              child: CircularProgressIndicator(),
             );
           },
         ),
