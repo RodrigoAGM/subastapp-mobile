@@ -5,6 +5,7 @@ import 'package:subastapp/ui/home/PerfilPage/add_shop/add_shop_page.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:subastapp/ui/login/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _storage = new FlutterSecureStorage();
 final _customerApi = new CustomerApi();
@@ -49,13 +50,22 @@ class PerfilPage extends StatelessWidget {
                   height: MediaQuery.of(context).size.width/1.5,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    
                     border: Border.all(width: 3,color: Colors.black,)
-
                   ),
                   child: Image(
                     image: (user.data.image != null) ? NetworkImage(user.data.image) : AssetImage('assets/user.png'),
                     ),
+                ),
+
+                Container(
+                  child: Text(
+                    (user.data.name != null) ? user.data.name : "User",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold, 
+                      fontSize: Theme.of(context).textTheme.display1.fontSize,
+                      color: Theme.of(context).hintColor,),
+                  ),
+                  margin: EdgeInsets.only(bottom: 10.0),
                 ),
 
                 FutureBuilder(
@@ -127,6 +137,11 @@ Future<Customer> _getCustomer() async {
 
 void _logout(BuildContext context) {
   _storage.deleteAll();
+  SharedPreferences.getInstance().then((prefs){
+      prefs.setBool('show', true);
+  });
+    
+
   Navigator.pushReplacement(context,
       PageTransition(type: PageTransitionType.fade, child: LoginPage()));
 }
