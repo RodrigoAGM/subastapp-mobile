@@ -20,11 +20,7 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  List<Widget> tabs = [
-    ShoppingPage(),
-    HomePage(),
-    PerfilPage(),
-  ];
+  List<Widget> tabs;
 
   List<BottomNavigationBarItem> items;
   List<BottomNavigationBarItem> extra;
@@ -33,17 +29,28 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     currentTabIndex = 1;
     super.initState();
+    tabs = [
+      ShoppingPage(),
+      HomePage(),
+      PerfilPage(),
+    ];
     items = [
-      BottomNavigationBarItem(icon: Icon(Icons.local_grocery_store), title: Text('Shopping')),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.local_grocery_store), title: Text('Shopping')),
       BottomNavigationBarItem(icon: Icon(Icons.gavel), title: Text('Home')),
       BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Settings'))
     ];
-    if(_secure.read(key:'store') != null){
-      tabs.add(StorePage());
+    if (_secure.read(key: 'store') != null) {
+      tabs = tabs = [
+        StorePage(),
+        HomePage(),
+        PerfilPage(),
+      ];
       extra = [
         BottomNavigationBarItem(icon: Icon(Icons.store), title: Text('Store')),
         BottomNavigationBarItem(icon: Icon(Icons.gavel), title: Text('Home')),
-        BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Settings'))
+        BottomNavigationBarItem(
+            icon: Icon(Icons.person), title: Text('Settings'))
       ];
     }
   }
@@ -83,10 +90,8 @@ class _MainPageState extends State<MainPage> {
         ),
         body: tabs[currentTabIndex],
         bottomNavigationBar: BottomNavigationBar(
-            onTap: onTapped, 
-            currentIndex: currentTabIndex, 
-            items: (tabs.length == 4) ? (extra) : items
-        )
-      );
+            onTap: onTapped,
+            currentIndex: currentTabIndex,
+            items: (tabs.length == 4) ? (extra) : items));
   }
 }
