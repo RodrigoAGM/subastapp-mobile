@@ -9,46 +9,54 @@ final _storage = new FlutterSecureStorage();
 class PerfilPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return Container(
+      child: Center(
         child: FutureBuilder(
           future: _getStore(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData && snapshot.data != "none") {
               return Column(
-                children: <Widget>[
-                  Container(),
-                  RaisedButton(
-                    child: Text("Log out", style: TextStyle(color: Colors.red),),
-                    onPressed: () {
-                      _logout(context);
-                    },
-                  ),
-
-                ],
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text(
+                        "Log out",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      onPressed: () {
+                        _logout(context);
+                      },
+                    ),
+                  ],
               );
-            }else if(snapshot.data == "none"){
+            } else if (snapshot.data == "none") {
               return Column(
-                children: <Widget>[
-                  RaisedButton(
-                    child: Text("Add Store"),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.fade, child: AddShopPage()));
-                    },
-                  ),
-                  RaisedButton(
-                    child: Text("Log out", style: TextStyle(color: Colors.red),),
-                    onPressed: () {
-                      _logout(context);
-                    },
-                  ),
-                ],
-              );
-            }
-            else{
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text("Add Store"),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.fade,
+                                child: AddShopPage()));
+                      },
+                    ),
+                    RaisedButton(
+                      child: Text(
+                        "Log out",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      onPressed: () {
+                        _logout(context);
+                      },
+                    ),
+                  ],
+                );
+            } else {
               return RefreshProgressIndicator();
             }
           },
@@ -59,15 +67,13 @@ class PerfilPage extends StatelessWidget {
 }
 
 Future<String> _getStore() async {
-  return (await _storage.read(key: 'store') == null
+  return (await _storage.read(key: 'store') == ""
       ? "none"
       : await _storage.read(key: 'store'));
 }
 
-void _logout(BuildContext context){
+void _logout(BuildContext context) {
   _storage.deleteAll();
-  Navigator.pushReplacement(
-    context,
-    PageTransition(
-        type: PageTransitionType.fade, child: LoginPage()));
+  Navigator.pushReplacement(context,
+      PageTransition(type: PageTransitionType.fade, child: LoginPage()));
 }
