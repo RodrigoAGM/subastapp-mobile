@@ -48,7 +48,20 @@ class _AddShopPageState extends State<AddShopPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agregar tienda'),
+        title: Text(
+          "SubastApp",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 1,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).accentColor,),
+          onPressed:(){
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Center(
         child: Container(
