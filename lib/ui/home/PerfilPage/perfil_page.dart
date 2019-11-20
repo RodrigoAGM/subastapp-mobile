@@ -9,8 +9,26 @@ final _storage = new FlutterSecureStorage();
 class PerfilPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "SubastApp",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 1,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app, color: Theme.of(context).accentColor,),
+            onPressed: () {
+              _logout(context);
+            },
+          ),
+        ],
+      ),
+      body: Center(
         child: FutureBuilder(
           future: _getStore(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {

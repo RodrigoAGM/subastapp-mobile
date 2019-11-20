@@ -5,8 +5,20 @@ class StorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(child: Text("Holi"),),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "SubastApp",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 1,
+        actions: <Widget>[
+        ],
+      ),
+      body: Center(child: Text("Holi"),),
     );
   }
 }

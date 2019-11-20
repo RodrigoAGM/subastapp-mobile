@@ -66,33 +66,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "SubastApp",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
-          backgroundColor: Theme.of(context).canvasColor,
-          elevation: 1,
-          actions: <Widget>[
-            FutureBuilder(
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (currentTabIndex == 1) {
-                  return IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      findProduct(context);
-                    },
-                    color: Theme.of(context).accentColor,
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-          ],
-        ),
+        
         body: FutureBuilder(
           future: _getStore(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -145,31 +119,6 @@ class _MainPageState extends State<MainPage> {
         ),
     );
   }
-
-
-  findProduct(BuildContext context){
-    TextEditingController customController=TextEditingController();
-
-    return showDialog(context: context,builder: (context){
-      return AlertDialog(
-        title: Text("¿Qué deseas buscar?"),
-        content: TextField(
-          controller: customController,
-        ),
-        actions: <Widget>[
-          MaterialButton(
-            elevation: 5.0,
-            child: Text("Buscar"),
-            onPressed: (){
-              Navigator.of(context).pop(customController.text.toString());
-            },
-          )
-        ],
-      );
-    });
-  }
-
-
 }
 
 

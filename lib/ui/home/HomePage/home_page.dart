@@ -6,8 +6,6 @@ import 'package:subastapp/ui/products/products_screen.dart';
 class HomePage extends StatelessWidget {
   final CategoryApi _categoryApi = new CategoryApi();
 
-
-
   Future<List<Mcategory>> function() async {
     var list = await _categoryApi.getAll();
     return list;
@@ -15,10 +13,26 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "SubastApp",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 1,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search, color: Theme.of(context).accentColor,),
+            onPressed: () {
+              findProduct(context);
+            },
+          ),
+        ],
+      ),
+      body: Column(
         children: <Widget>[
           Expanded(
             child: FutureBuilder<List<Mcategory>>(
@@ -35,25 +49,31 @@ class HomePage extends StatelessWidget {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProductPage()),
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductPage(snapshot.data[index].id)),
                               );
                             },
                             child: Container(
-
                               margin: EdgeInsets.all(20.0),
                               child: Column(
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      snapshot.data[index].name, 
-                                      style: TextStyle(fontWeight: FontWeight.bold, ),
+                                      snapshot.data[index].name,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                   ClipRRect(
-                                    borderRadius: new BorderRadius.only(bottomRight: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
+                                    borderRadius: new BorderRadius.only(
+                                        bottomRight: Radius.circular(20.0),
+                                        bottomLeft: Radius.circular(20.0)),
                                     child: Image(
-                                      image: AssetImage("assets/image/category.jpg"),
+                                      image: AssetImage(
+                                          "assets/image/category.jpg"),
                                     ),
                                   )
                                 ],
@@ -87,45 +107,26 @@ class HomePage extends StatelessWidget {
   }
 }
 
+findProduct(BuildContext context) {
+  TextEditingController customController = TextEditingController();
 
-/*
-class DataSearch extends SearchDelegate<String> {
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    //actions for app bar
-
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {},
-      )
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    //leading icon on the left of the app bar
-
-    return IconButton(
-        icon: AnimatedIcon(
-            icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
-        onPressed: () {});
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    //show some result base on the selection
-    return null;
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    //show when someone searches for something
-
-    final suggestionList = query.isEmpty ? 
-
-    return null;
-  }
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("¿Qué deseas buscar?"),
+          content: TextField(
+            controller: customController,
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              elevation: 5.0,
+              child: Text("Buscar"),
+              onPressed: () {
+                Navigator.of(context).pop(customController.text.toString());
+              },
+            )
+          ],
+        );
+      });
 }
-
-*/
