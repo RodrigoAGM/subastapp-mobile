@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:subastapp/model/category.dart';
 import 'package:subastapp/network/category_api.dart';
+import 'package:subastapp/ui/products/products_screen.dart';
 
 class HomePage extends StatelessWidget {
   final CategoryApi _categoryApi = new CategoryApi();
+
+
 
   Future<List<Mcategory>> function() async {
     var list = await _categoryApi.getAll();
@@ -12,6 +15,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -28,7 +34,12 @@ class HomePage extends StatelessWidget {
                       return ListBody(
                         children: <Widget>[
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ProductPage()),
+                              );
+                            },
                             child: Container(
 
                               margin: EdgeInsets.all(20.0),
