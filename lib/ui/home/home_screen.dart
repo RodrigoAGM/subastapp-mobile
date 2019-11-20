@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:subastapp/ui/home/HomePage/home_page.dart';
 import 'package:subastapp/ui/home/PerfilPage/perfil_page.dart';
 import 'package:subastapp/ui/home/ShoppingPage/shopping_page.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:subastapp/ui/home/StorePage/store_screen.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -10,6 +12,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentTabIndex = 0;
+  final _secure = new FlutterSecureStorage();
 
   onTapped(int index) {
     setState(() {
@@ -23,10 +26,26 @@ class _MainPageState extends State<MainPage> {
     PerfilPage(),
   ];
 
+  List<BottomNavigationBarItem> items;
+  List<BottomNavigationBarItem> extra;
+
   @override
   void initState() {
     currentTabIndex = 1;
     super.initState();
+    items = [
+      BottomNavigationBarItem(icon: Icon(Icons.local_grocery_store), title: Text('Shopping')),
+      BottomNavigationBarItem(icon: Icon(Icons.gavel), title: Text('Home')),
+      BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Settings'))
+    ];
+    if(_secure.read(key:'store') != null){
+      tabs.add(StorePage());
+      extra = [
+        BottomNavigationBarItem(icon: Icon(Icons.store), title: Text('Store')),
+        BottomNavigationBarItem(icon: Icon(Icons.gavel), title: Text('Home')),
+        BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Settings'))
+      ];
+    }
   }
 
   @override
@@ -64,16 +83,10 @@ class _MainPageState extends State<MainPage> {
         ),
         body: tabs[currentTabIndex],
         bottomNavigationBar: BottomNavigationBar(
-            onTap: onTapped,
-            currentIndex: currentTabIndex,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.local_grocery_store),
-                  title: Text('Shopping')),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.gavel), title: Text('Home')),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person), title: Text('Settings'))
-            ]));
+            onTap: onTapped, 
+            currentIndex: currentTabIndex, 
+            items: (tabs.length == 4) ? (extra) : items
+        )
+      );
   }
 }

@@ -15,7 +15,7 @@ class PerfilPage extends StatelessWidget {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData && snapshot.data != "none") {
               return Container();
-            }else{
+            }else if(snapshot.data == "none"){
               return RaisedButton(
                 child: Text("Add Store"),
                 onPressed: () {
@@ -25,6 +25,9 @@ class PerfilPage extends StatelessWidget {
                           type: PageTransitionType.fade, child: AddShopPage()));
                 },
               );
+            }
+            else{
+              return RefreshProgressIndicator();
             }
           },
         ),
