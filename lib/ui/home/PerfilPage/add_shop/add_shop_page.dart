@@ -6,6 +6,8 @@ import 'package:subastapp/network/market_api.dart';
 import 'package:subastapp/network/store_api.dart';
 import 'package:subastapp/ui/animation/FadeAnimation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:subastapp/ui/login/login_screen.dart';
 
 const double paddingValue = 16.0;
 
@@ -323,7 +325,11 @@ class _AddShopPageState extends State<AddShopPage> {
                                   name, description, storeNumber, phone, open, close, selectedMarket, contactName);
                               if (res == "success") {
                                 _toastMessage("Completed", Colors.green.withOpacity(.6));
-                                Navigator.of(context).pop();
+                                Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.fade,
+                                child: LoginPage()));
                               } else {
                                 _toastMessage(
                                     "You must complete all the fields", Colors.red.withOpacity(.6));

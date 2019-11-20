@@ -31,8 +31,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginStateLoading();
       var result = await _customerApi.login(event.email, event.pass);
 
-      debugPrint("Entered here");
-
       if (result == null) {
         yield LoginStateError();
       } else if (result.id == "not found") {
