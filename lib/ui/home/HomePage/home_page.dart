@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        ProductPage(snapshot.data[index].id)),
+                                        ProductPage(snapshot.data[index].id, snapshot.data[index].name)),
                               );
                             },
                             child: Container(

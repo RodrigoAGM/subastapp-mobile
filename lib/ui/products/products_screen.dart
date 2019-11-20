@@ -4,17 +4,19 @@ import 'package:subastapp/network/product_api.dart';
 
 class ProductPage extends StatefulWidget {
   final categoryId;
+  final categoryName;
 
-  ProductPage(this.categoryId);
+  ProductPage(this.categoryId, this.categoryName);
 
   @override
-  _ProductPageState createState() => _ProductPageState(categoryId);
+  _ProductPageState createState() => _ProductPageState(categoryId, categoryName);
 }
 
 class _ProductPageState extends State<ProductPage> {
   final _categoryId;
+  final categoryName;
 
-  _ProductPageState(this._categoryId);
+  _ProductPageState(this._categoryId, this.categoryName);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class _ProductPageState extends State<ProductPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "SubastApp",
+          categoryName,
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
