@@ -21,9 +21,12 @@ class _MainPageState extends State<MainPage> {
   }
 
   List<Widget> tabs;
-
   List<BottomNavigationBarItem> items;
   List<BottomNavigationBarItem> extra;
+
+  Future<String> _getStore() async{
+    return await _secure.read(key: 'store');
+  }
 
   @override
   void initState() {
@@ -40,7 +43,7 @@ class _MainPageState extends State<MainPage> {
       BottomNavigationBarItem(icon: Icon(Icons.gavel), title: Text('Home')),
       BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Settings'))
     ];
-    if (_secure.read(key: 'store') != null) {
+    if (_secure.read(key: 'store') != "") {
       tabs = tabs = [
         StorePage(),
         HomePage(),
@@ -88,10 +91,56 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
-        body: tabs[currentTabIndex],
-        bottomNavigationBar: BottomNavigationBar(
-            onTap: onTapped,
-            currentIndex: currentTabIndex,
-            items: (tabs.length == 4) ? (extra) : items));
+        body: FutureBuilder(
+          future: _getStore(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData && snapshot.data == ""){
+              tabs.clear();
+              tabs = [ShoppingPage(), HomePage(),PerfilPage()];
+              return tabs[currentTabIndex];
+            }else if (snapshot.hasData && snapshot.data != ""){
+              tabs.clear();
+              tabs = [StorePage(), ShoppingPage(), HomePage(),PerfilPage()];
+              return tabs[currentTabIndex];
+            }
+            return Center(child: CircularProgressIndicator());
+          },
+        ),
+        bottomNavigationBar: FutureBuilder(
+          future: _getStore(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+
+            if(snapshot.hasData && snapshot.data == ""){
+              items = [
+                BottomNavigationBarItem(icon: Icon(Icons.local_grocery_store), title: Text('Shopping')),
+                BottomNavigationBarItem(icon: Icon(Icons.gavel), title: Text('Home')),
+                BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Settings'))
+              ];
+              return BottomNavigationBar(
+                onTap: onTapped,
+                currentIndex: currentTabIndex,
+                items: items
+              );
+            }else if(snapshot.hasData && snapshot.data != ""){
+              items = [
+                BottomNavigationBarItem(icon: Icon(Icons.store), title: Text('Store')),
+                BottomNavigationBarItem(icon: Icon(Icons.local_grocery_store), title: Text('Shopping')),
+                BottomNavigationBarItem(icon: Icon(Icons.gavel), title: Text('Home')),
+                BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Settings'))
+              ];
+              return BottomNavigationBar(
+                selectedItemColor: Theme.of(context).accentColor,
+                unselectedItemColor: Theme.of(context).hintColor,
+                showUnselectedLabels: true,
+                onTap: onTapped,
+                currentIndex: currentTabIndex,
+                items: items
+              );
+            }
+
+            return Center(child: CircularProgressIndicator(),);
+          },
+        ),
+    );
   }
 }
