@@ -21,7 +21,10 @@ class PerfilPage extends StatelessWidget {
         elevation: 1,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.exit_to_app, color: Theme.of(context).accentColor,),
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Theme.of(context).accentColor,
+            ),
             onPressed: () {
               _logout(context);
             },
@@ -29,56 +32,58 @@ class PerfilPage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: FutureBuilder(
-          future: _getStore(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData && snapshot.data != "none") {
-              return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text(
-                        "Log out",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      onPressed: () {
-                        _logout(context);
-                      },
-                    ),
-                  ],
-              );
-            } else if (snapshot.data == "none") {
-              return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text("Add Store"),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.fade,
-                                child: AddShopPage()));
-                      },
-                    ),
-                    RaisedButton(
-                      child: Text(
-                        "Log out",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      onPressed: () {
-                        _logout(context);
-                      },
-                    ),
-                  ],
-                );
-            } else {
-              return RefreshProgressIndicator();
-            }
-          },
-        ),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+
+              
+
+              FutureBuilder(
+                future: _getStore(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData && snapshot.data != "none") {
+                    return LogoutButton();
+                  } else if (snapshot.data == "none") {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ButtonTheme(
+                          minWidth: MediaQuery.of(context).size.width / 1.5,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(50),
+                            ),
+                            color: Colors.blue[600],
+                            child: Container(
+                              width: 120,
+                              padding: EdgeInsets.all(15),
+                              child: Center(
+                                  child: Text(
+                                "Add Store",
+                                style: TextStyle(
+                                    color: Colors.white.withOpacity(.8),
+                                    fontWeight: FontWeight.bold),
+                              )),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.fade,
+                                      child: AddShopPage()));
+                            },
+                          ),
+                        ),
+                        LogoutButton()
+                      ],
+                    );
+                  } else {
+                    return RefreshProgressIndicator();
+                  }
+                },
+              ),
+            ]),
       ),
     );
   }
@@ -94,4 +99,35 @@ void _logout(BuildContext context) {
   _storage.deleteAll();
   Navigator.pushReplacement(context,
       PageTransition(type: PageTransitionType.fade, child: LoginPage()));
+}
+
+class LogoutButton extends StatelessWidget {
+  const LogoutButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ButtonTheme(
+      minWidth: MediaQuery.of(context).size.width / 1.5,
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(50),
+        ),
+        color: Colors.red[700],
+        child: Container(
+          width: 120,
+          padding: EdgeInsets.all(15),
+          child: Center(
+              child: Text(
+            "Logout",
+            style: TextStyle(
+                color: Colors.white.withOpacity(.8),
+                fontWeight: FontWeight.bold),
+          )),
+        ),
+        onPressed: () {
+          _logout(context);
+        },
+      ),
+    );
+  }
 }
