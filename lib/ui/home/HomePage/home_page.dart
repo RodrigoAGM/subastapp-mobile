@@ -16,8 +16,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -89,3 +87,46 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+
+/*
+class DataSearch extends SearchDelegate<String> {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    //actions for app bar
+
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {},
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    //leading icon on the left of the app bar
+
+    return IconButton(
+        icon: AnimatedIcon(
+            icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
+        onPressed: () {});
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    //show some result base on the selection
+    return null;
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    //show when someone searches for something
+
+    final suggestionList = query.isEmpty ? 
+
+    return null;
+  }
+}
+
+*/

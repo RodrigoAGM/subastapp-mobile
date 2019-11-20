@@ -39,7 +39,11 @@ class _ProductPageState extends State<ProductPage> {
                             subtitle: Text(
                               'S/. ${snapshot.data[index].price.toString()}',
                             ),
-                          )),
+                            onTap: (){
+                              receiveOffers(context);
+                            },
+                          )
+                          ),
                     ),
                   );
                 },
@@ -71,3 +75,22 @@ List<Widget> _buildGridTiles(int numberOfTiles, List<Product> products) {
   });
   return containers;
 }
+
+receiveOffers(BuildContext context){
+
+    return showDialog(context: context,builder: (context){
+      return AlertDialog(
+        title: Text("¿Deseas recibir ofertas de las tiendas cercanas?"),
+        actions: <Widget>[
+          MaterialButton(
+            elevation: 5.0,
+            child: Text("Ok"),
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    });
+  }
+
