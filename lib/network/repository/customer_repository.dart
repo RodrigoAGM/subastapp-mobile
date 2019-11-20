@@ -58,12 +58,8 @@ class CustomerRepository {
       }
       var res = json.decode(response.body);
       var message = res['nModified'];
-
-      if (int.parse(message.toString()) >= 1) {
-        await _storage.write(key: 'store', value: storeId);
-        return true;
-      }
-      return false;
+      
+      await _storage.write(key: 'store', value: storeId);
     });
   }
 
