@@ -12,4 +12,8 @@ class CustomerApi{
   Future<Customer> login(String email, String password){
     return _customerRepository.login(email, password);
   }
+
+  Future<bool> editCustomerStore(String storeId){
+    return _customerRepository.editCustomerStore(storeId);
+  }
 }
