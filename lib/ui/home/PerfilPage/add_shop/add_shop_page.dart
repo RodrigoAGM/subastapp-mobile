@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:subastapp/model/market.dart';
+import 'package:subastapp/network/market_api.dart';
+import 'package:subastapp/network/store_api.dart';
 import 'package:subastapp/ui/animation/FadeAnimation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -13,18 +16,31 @@ class AddShopPage extends StatefulWidget {
 
 class _AddShopPageState extends State<AddShopPage> {
   final _nameController = TextEditingController();
+  final _contactNameController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _emailController = TextEditingController();
+  final _storeNumberController = TextEditingController();
   final _phoneController = TextEditingController();
   final _openController = TextEditingController();
   final _closeController = TextEditingController();
   final _nameFocus = FocusNode();
+  final _contactNameFocus = FocusNode();
   final _descriptionFocus = FocusNode();
-  final _emailFocus = FocusNode();
+  final _storeNumberFocus = FocusNode();
   final _phoneFocus = FocusNode();
   final _openFocus = FocusNode();
   final _closeFocus = FocusNode();
   final format = DateFormat("hh:mm a");
+  final _storeApi = new StoreApi();
+  final _marketApi = new MarketApi();
+  List<DropdownMenuItem>list = [];
+  var dropDownItemsMap;
+  var _selectedItem =0;
+  var selectedMarket;
+
+  Future<List<Market>> function() async {
+    var list = await _marketApi.getAll();
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +81,8 @@ class _AddShopPageState extends State<AddShopPage> {
                           Container(
                             decoration: BoxDecoration(
                                 border: Border(
-                                    bottom: BorderSide(color: Colors.grey[300]))),
+                                    bottom:
+                                        BorderSide(color: Colors.grey[300]))),
                             child: TextFormField(
                               controller: _nameController,
                               focusNode: _nameFocus,
@@ -73,86 +90,116 @@ class _AddShopPageState extends State<AddShopPage> {
                               textCapitalization: TextCapitalization.words,
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (value) {
-                                _fieldFocusChange(context, _nameFocus, _descriptionFocus);
+                                _fieldFocusChange(
+                                    context, _nameFocus, _contactNameFocus);
                               },
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintStyle:
-                                      TextStyle(color: Colors.grey.withOpacity(.8)),
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey.withOpacity(.8)),
                                   hintText: "Name"),
                             ),
                           ),
                           Container(
                             decoration: BoxDecoration(
                                 border: Border(
-                                    bottom: BorderSide(color: Colors.grey[300]))),
+                                    bottom:
+                                        BorderSide(color: Colors.grey[300]))),
+                            child: TextFormField(
+                              controller: _contactNameController,
+                              focusNode: _contactNameFocus,
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.words,
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (value) {
+                                _fieldFocusChange(
+                                    context, _contactNameFocus, _descriptionFocus);
+                              },
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey.withOpacity(.8)),
+                                  hintText: "Contact name"),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom:
+                                        BorderSide(color: Colors.grey[300]))),
                             child: TextFormField(
                               controller: _descriptionController,
                               focusNode: _descriptionFocus,
                               keyboardType: TextInputType.multiline,
                               maxLines: 3,
+                              textCapitalization: TextCapitalization.sentences,
                               textInputAction: TextInputAction.next,
-                              onFieldSubmitted: (value){
-                                _fieldFocusChange(context, _descriptionFocus, _emailFocus);
+                              onFieldSubmitted: (value) {
+                                _fieldFocusChange(
+                                    context, _descriptionFocus, _storeNumberFocus);
                               },
-                              obscureText: true,
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintStyle:
-                                      TextStyle(color: Colors.grey.withOpacity(.8)),
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey.withOpacity(.8)),
                                   hintText: "Description"),
                             ),
                           ),
                           Container(
                             decoration: BoxDecoration(
                                 border: Border(
-                                    bottom: BorderSide(color: Colors.grey[300]))),
+                                    bottom:
+                                        BorderSide(color: Colors.grey[300]))),
                             child: TextFormField(
-                              controller: _emailController,
-                              focusNode: _emailFocus,
-                              keyboardType: TextInputType.emailAddress,
-                              textCapitalization: TextCapitalization.words,
+                              controller: _storeNumberController,
+                              focusNode: _storeNumberFocus,
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.none,
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (value) {
-                                _fieldFocusChange(context, _emailFocus, _phoneFocus);                                
+                                _fieldFocusChange(
+                                    context, _storeNumberFocus, _phoneFocus);
                               },
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintStyle:
-                                      TextStyle(color: Colors.grey.withOpacity(.8)),
-                                  hintText: "Email"),
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey.withOpacity(.8)),
+                                  hintText: "Store number"),
                             ),
                           ),
                           Container(
                             decoration: BoxDecoration(
                                 border: Border(
-                                    bottom: BorderSide(color: Colors.grey[300]))),
+                                    bottom:
+                                        BorderSide(color: Colors.grey[300]))),
                             child: TextFormField(
                               controller: _phoneController,
                               focusNode: _phoneFocus,
                               keyboardType: TextInputType.number,
-                              textCapitalization: TextCapitalization.words,
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (value) {
-                                _fieldFocusChange(context, _phoneFocus, _openFocus);
+                                _fieldFocusChange(
+                                    context, _phoneFocus, _openFocus);
                               },
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintStyle:
-                                      TextStyle(color: Colors.grey.withOpacity(.8)),
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey.withOpacity(.8)),
                                   hintText: "Phone"),
                             ),
                           ),
                           Container(
                             decoration: BoxDecoration(
                                 border: Border(
-                                    bottom: BorderSide(color: Colors.grey[300]))),
+                                    bottom:
+                                        BorderSide(color: Colors.grey[300]))),
                             child: DateTimeField(
                               controller: _openController,
                               focusNode: _openFocus,
                               format: format,
-                              onFieldSubmitted: (value){
-                                _fieldFocusChange(context, _openFocus, _closeFocus);
+                              onFieldSubmitted: (value) {
+                                _fieldFocusChange(
+                                    context, _openFocus, _closeFocus);
                               },
                               onShowPicker: (context, currentValue) async {
                                 final time = await showTimePicker(
@@ -164,15 +211,16 @@ class _AddShopPageState extends State<AddShopPage> {
                               },
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintStyle:
-                                      TextStyle(color: Colors.grey.withOpacity(.8)),
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey.withOpacity(.8)),
                                   hintText: "Opens at"),
                             ),
                           ),
                           Container(
                             decoration: BoxDecoration(
                                 border: Border(
-                                    bottom: BorderSide(color: Colors.grey[300]))),
+                                    bottom:
+                                        BorderSide(color: Colors.grey[300]))),
                             child: DateTimeField(
                               controller: _closeController,
                               focusNode: _closeFocus,
@@ -187,11 +235,62 @@ class _AddShopPageState extends State<AddShopPage> {
                               },
                               decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintStyle:
-                                      TextStyle(color: Colors.grey.withOpacity(.8)),
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey.withOpacity(.8)),
                                   hintText: "Closes at"),
                             ),
                           ),
+                          DropdownButtonHideUnderline(
+                            child: FutureBuilder<List<Market>>(
+                              future: function(),
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+
+                                if (snapshot.hasError) {
+                                  return Container();
+
+                                } else if (snapshot.hasData) {
+                                  list.clear();
+                                  dropDownItemsMap = new Map();
+
+                                  list.add(new DropdownMenuItem(
+                                        child: new Container( 
+                                          child: Text("Choose market")),
+                                        value: 0));
+                                  dropDownItemsMap[0] = new Market(name: "Choose market...", id: "0");
+                                  snapshot.data.forEach((branchItem) {
+                                    //listItemNames.add(branchItem.itemName);
+                                    int index = snapshot.data.indexOf(branchItem)+1;
+                                    dropDownItemsMap[index] = branchItem;
+
+                                    list.add(new DropdownMenuItem(
+                                        child: new Container( 
+                                          child: Text(dropDownItemsMap[index].name)),
+                                        value: index));
+                                  });
+
+                                    return DropdownButtonFormField(
+                                      items:list,
+                                      onChanged: (value){
+
+                                        _selectedItem = int.parse(value.toString());
+                                        selectedMarket = dropDownItemsMap[_selectedItem].id;
+                                        setState(() {
+                                          
+                                        });
+                                      },
+                                      hint: Text(dropDownItemsMap[_selectedItem].name),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        ),
+                                    );
+
+                                  
+                                }
+
+                                return CircularProgressIndicator();
+                              },
+                            ),
+                          )
                         ],
                       ),
                     )),
@@ -204,19 +303,34 @@ class _AddShopPageState extends State<AddShopPage> {
                         child: Column(
                       children: <Widget>[
                         RaisedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             var name = _nameController.text;
                             var description = _descriptionController.text;
-                            var email = _emailController.text;
+                            var storeNumber = _storeNumberController.text;
                             var phone = _phoneController.text;
                             var open = _openController.text;
                             var close = _closeController.text;
+                            var contactName = _contactNameController.text;
 
-                            if (name.isNotEmpty && description.isNotEmpty && email.isNotEmpty && phone.isNotEmpty && open.isNotEmpty && close.isNotEmpty){
-                              
-                            }else{
-                              _toastMessage("You must complete all the fields");
-                            }       
+                            if (name.isNotEmpty &&
+                                description.isNotEmpty &&
+                                storeNumber.isNotEmpty &&
+                                phone.isNotEmpty &&
+                                open.isNotEmpty &&
+                                close.isNotEmpty && selectedMarket != "0" && contactName.isNotEmpty) {
+                                  debugPrint(selectedMarket);
+                              var res = await _storeApi.register(
+                                  name, description, storeNumber, phone, open, close, selectedMarket, contactName);
+                              if (res == "success") {
+                                _toastMessage("Completed", Colors.green.withOpacity(.6));
+                                Navigator.of(context).pop();
+                              } else {
+                                _toastMessage(
+                                    "You must complete all the fields", Colors.red.withOpacity(.6));
+                              }
+                            } else {
+                              _toastMessage("You must complete all the fields", Colors.red.withOpacity(.6));
+                            }
                           },
                           shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(50),
@@ -228,7 +342,8 @@ class _AddShopPageState extends State<AddShopPage> {
                             child: Center(
                                 child: Text(
                               "Create",
-                              style: TextStyle(color: Colors.white.withOpacity(.8)),
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(.8)),
                             )),
                           ),
                         ),
@@ -243,20 +358,19 @@ class _AddShopPageState extends State<AddShopPage> {
   }
 }
 
-_fieldFocusChange(BuildContext context, FocusNode currentFocus,FocusNode nextFocus) {
+_fieldFocusChange(
+    BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
   currentFocus.unfocus();
-  FocusScope.of(context).requestFocus(nextFocus);  
+  FocusScope.of(context).requestFocus(nextFocus);
 }
 
-_toastMessage(String message){
-
+_toastMessage(String message, Color color) {
   Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIos: 1,
-      backgroundColor: Colors.red.withOpacity(.6),
+      backgroundColor: color,
       textColor: Colors.white,
-      fontSize: 12.0
-  );
+      fontSize: 12.0);
 }

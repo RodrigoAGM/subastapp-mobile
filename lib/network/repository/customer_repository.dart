@@ -8,7 +8,6 @@ class CustomerRepository{
 
   Future<String> register(String name, String email, String password){
 
-
     Customer cus = new Customer(email: email, name: name, password: password);
 
     final url = 'https://subastapp.herokuapp.com/customers/signup';

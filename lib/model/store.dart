@@ -1,19 +1,20 @@
 class Store {
   String id;
   String name;
+  String marketId;
   String description;
   String storeNumber;
   num floor;
   String contactName;
   String email;
   String webpage;
-  num phone;
+  String phone;
   String imageUrl;
   String opensat;
   String closesat;
 
   Store({this.id, this.name, this.description, this.storeNumber, this.floor, this.contactName, this.email,
-  this.webpage, this.phone, this.imageUrl, this.opensat, this.closesat});
+  this.webpage, this.phone, this.imageUrl, this.opensat, this.closesat, this.marketId});
 
   factory Store.fromJson(Map<String, dynamic> json){
     return Store(
@@ -29,6 +30,7 @@ class Store {
         imageUrl: json['image_url'],
         opensat: json['opensat'],
         closesat: json['closesat'],
+        marketId: json['market'],
     );
   }
 
@@ -45,5 +47,18 @@ class Store {
     'image_url'  : imageUrl,
     'opensat'  : opensat,
     'closesat'  : closesat,
+    'market': marketId,
+  };
+
+  Map<String, dynamic> toRegisterJson() =>{
+    'name'  : name,
+    'description'  : description,
+    'contact_name' : contactName,
+    'email' :email,
+    'phone': phone,
+    'store_number'  : storeNumber,
+    'opensat'  : opensat,
+    'closesat'  : closesat,
+    'market':marketId,
   };
 }
