@@ -25,6 +25,20 @@ class CustomerRepository {
     });
   }
 
+  Future<Customer> getById(String id) {
+    final url = 'https://subastapp.herokuapp.com/customers/' + id;
+    return http.get(url).then((http.Response response) {
+      final int statusCode = response.statusCode;
+
+      if (statusCode < 200 || statusCode > 400) {
+        throw new Exception("Error while fetching data");
+      }
+      var res = json.decode(response.body);
+      Customer customer = Customer.fromJson(res);
+      return customer;
+    });
+  }
+
   Future<bool> editCustomerStore(String storeId) async {
     var body = {"propName": "store", "value":  storeId.toString() };
     var token = await _storage.read(key: 'token');
