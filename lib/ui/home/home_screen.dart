@@ -81,7 +81,9 @@ class _MainPageState extends State<MainPage> {
                 if (currentTabIndex == 1) {
                   return IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () {},
+                    onPressed: () {
+                      findProduct(context);
+                    },
                     color: Theme.of(context).accentColor,
                   );
                 } else {
@@ -143,4 +145,31 @@ class _MainPageState extends State<MainPage> {
         ),
     );
   }
+
+
+  findProduct(BuildContext context){
+    TextEditingController customController=TextEditingController();
+
+    return showDialog(context: context,builder: (context){
+      return AlertDialog(
+        title: Text("¿Qué deseas buscar?"),
+        content: TextField(
+          controller: customController,
+        ),
+        actions: <Widget>[
+          MaterialButton(
+            elevation: 5.0,
+            child: Text("Buscar"),
+            onPressed: (){
+              Navigator.of(context).pop(customController.text.toString());
+            },
+          )
+        ],
+      );
+    });
+  }
+
+
 }
+
+
