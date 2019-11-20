@@ -27,20 +27,16 @@ class CustomerRepository {
   }
 
   Future<bool> editCustomerStore(String storeId) async {
-    var body = "{'propName': 'store', 'value': '" + storeId +"'}";
-
+    var body = {"propName": "store", "value":  storeId.toString() };
     var token = await _storage.read(key: 'token');
     var userId = await _storage.read(key: 'userId');
-    debugPrint("##########################" + json.encode(body).toString());
 
-    Map<String, String> headers = {"Authorization": token};
-    debugPrint("##########################" + headers.toString());
+    Map<String, String> headers = {"Authorization": token, "content-type": "application/json"};
 
     final url = 'https://subastapp.herokuapp.com/customers/' + userId;
     return http
         .patch(url, headers: headers, body: json.encode([body]))
         .then((http.Response response) async {
-      debugPrint("##########################" + response.statusCode.toString());
 
       final int statusCode = response.statusCode;
 
@@ -50,13 +46,10 @@ class CustomerRepository {
       var res = json.decode(response.body);
       var message = res['nModified'];
 
-      debugPrint("##########################" + message);
-
-      if (int.parse(message) >= 1) {
+      if (int.parse(message.toString()) >= 1) {
         await _storage.write(key: 'store', value: storeId);
         return true;
       }
-
       return false;
     });
   }

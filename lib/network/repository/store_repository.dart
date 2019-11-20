@@ -78,7 +78,7 @@ class StoreRepository {
       var id = res['_id'];
       await _storage.write(key: 'store', value: id);
 
-      //await _customerApi.editCustomerStore(id.toString());
+      await _customerApi.editCustomerStore(id.toString());
 
       return "success";
     });
