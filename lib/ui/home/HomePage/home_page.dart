@@ -68,7 +68,6 @@ class HomePage extends StatelessWidget {
                   );
                 } else {
                   return Center(child: RefreshProgressIndicator());
-                  //Center(child: Text("Nothing to see"));
                 }
               },
             ),
