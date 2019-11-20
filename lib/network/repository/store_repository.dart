@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:subastapp/model/store.dart';
 
-class ProductRepository{
+class StoreRepository{
 
   Future<List<Store>> getAll(){
 
