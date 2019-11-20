@@ -78,7 +78,6 @@ class CustomerRepository {
         token = res['token'];
 
         var parsedData = parseJwt(token);
-        debugPrint(parsedData.toString());
         newId = parsedData['userId'];
         newEmail = parsedData['email'];
         storeid = parsedData['storeId'] == null ? "" : parsedData['storeId'];

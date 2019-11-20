@@ -320,7 +320,6 @@ class _AddShopPageState extends State<AddShopPage> {
                                 phone.isNotEmpty &&
                                 open.isNotEmpty &&
                                 close.isNotEmpty && selectedMarket != "0" && contactName.isNotEmpty) {
-                                  debugPrint(selectedMarket);
                               var res = await _storeApi.register(
                                   name, description, storeNumber, phone, open, close, selectedMarket, contactName);
                               if (res == "success") {

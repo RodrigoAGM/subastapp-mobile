@@ -36,7 +36,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else if (result.id == "not found") {
         yield LoginStateDefault(true);
       } else {
-        debugPrint(result.toString());
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('show', false);
         await _storage.write(key: 'token', value: result.token);
@@ -62,7 +61,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (email != null && pass != null) {
         var result = await _customerApi.login(email, pass);
-        debugPrint(result.toString());
 
         if (result == null) {
           yield LoginStateDefault(false);
