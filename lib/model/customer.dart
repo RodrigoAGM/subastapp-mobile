@@ -19,7 +19,7 @@ class Customer {
       password: json['password'],
       phone: json['phone'],
       age: json['age'],
-      image: json['image'],
+      image: json['image_url'],
       storeId: json['storeId']
     );
   }
@@ -31,7 +31,7 @@ class Customer {
     'password':password,
     'phone': phone,
     'age': age,
-    'image': image,
+    'image_url': image,
     'storeId' : storeId
   };
 

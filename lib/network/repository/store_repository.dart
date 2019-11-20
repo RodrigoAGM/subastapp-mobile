@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:subastapp/model/store.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -31,7 +32,14 @@ class StoreRepository {
         throw new Exception("Error while fetching data");
       }
       var res = json.decode(response.body);
-      Store store = Store.fromJson(res);
+      print(res);
+      Store store;
+      try {
+        res['phone'] = res['phone'].toString();
+        store= Store.fromJson(res);
+      } catch (e) {
+        print(e);
+      }
       return store;
     });
   }
@@ -66,7 +74,6 @@ class StoreRepository {
     return http
         .post(url, body: sto.toRegisterJson(), headers: headers)
         .then((http.Response response) async {
-
       final int statusCode = response.statusCode;
 
       if (statusCode < 200 || statusCode > 400) {

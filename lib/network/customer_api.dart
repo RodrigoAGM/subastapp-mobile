@@ -16,4 +16,8 @@ class CustomerApi{
   Future<bool> editCustomerStore(String storeId){
     return _customerRepository.editCustomerStore(storeId);
   }
+
+  Future<Customer> getById(String id) {
+    return _customerRepository.getById(id);
+  }
 }
